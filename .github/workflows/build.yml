@@ -1,0 +1,68 @@
+name: Build OrangeFox starlte
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          sudo docker image prune --all --force || true
+          df -h /
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gnupg flex bison build-essential zip unzip curl zlib1g-dev libc6-dev-i386 libncurses5 lib32ncurses-dev x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev libxml2-utils xsltproc fontconfig python-is-python3 bc ccache rsync xz-utils lzop
+          mkdir -p ~/bin
+          curl -s https://storage.googleapis.com/git-repo-downloads/repo -o ~/bin/repo
+          chmod +x ~/bin/repo
+          echo "$HOME/bin" >> $GITHUB_PATH
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+      - name: Sync OrangeFox 12.1
+        run: |
+          git clone https://gitlab.com/OrangeFox/sync.git ~/sync
+          cd ~/sync
+          ./orangefox_sync.sh --branch 12.1 --path ~/fox
+      - name: Checkout device tree
+        uses: actions/checkout@v4
+        with:
+          path: device-tree
+      - name: Build
+        run: |
+          mkdir -p ~/fox/device/samsung
+          cp -r device-tree ~/fox/device/samsung/starlte
+          cd ~/fox
+          export FOX_BUILD_DEVICE=starlte
+          export ALLOW_MISSING_DEPENDENCIES=true
+          export LC_ALL=C
+          set +e
+          source build/envsetup.sh
+          lunch twrp_starlte-eng || exit 1
+          mkdir -p out/target/product/starlte/root
+          mka adbd recoveryimage 2>&1 | tee $GITHUB_WORKSPACE/build.log
+          [ ${PIPESTATUS[0]} -eq 0 ] || exit 1
+          test -f out/target/product/starlte/recovery/root/system/bin/recovery || { echo "ERRO: binario recovery em falta no ramdisk"; exit 1; }
+      - name: Repack for Samsung (DTBH) and make Odin tar
+        run: |
+          cd ~/fox
+          IMG=$(ls out/target/product/starlte/OrangeFox*.img 2>/dev/null | head -1)
+          [ -n "$IMG" ] || IMG=out/target/product/starlte/recovery.img
+          echo "input: $IMG"
+          mkdir -p $GITHUB_WORKSPACE/out
+          python3 device/samsung/starlte/ofox_repack.py "$IMG" device/samsung/starlte/prebuilt/dtb.img $GITHUB_WORKSPACE/out/recovery.img ""
+          cd $GITHUB_WORKSPACE/out
+          tar -H ustar -cf OrangeFox-starlte.tar recovery.img
+          ls -l
+      - name: Collect log
+        if: always()
+        run: |
+          mkdir -p out
+          cp build.log out/ || true
+      - name: Upload
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: orangefox-starlte
+          path: out/
