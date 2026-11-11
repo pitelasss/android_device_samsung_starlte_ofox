@@ -37,6 +37,13 @@ jobs:
           export FOX_BUILD_DEVICE=starlte
           export ALLOW_MISSING_DEPENDENCIES=true
           export LC_ALL=C
+          # OrangeFox default theme: Black (dark) instead of Cream (light)
+          FOX_THEME=Black
+          n=0
+          for f in $(find bootable/recovery -path '*/themes/style.xml'); do
+            cp "$(dirname "$f")/styles/$FOX_THEME.xml" "$f" && n=$((n+1)) && echo "default theme -> $FOX_THEME: $f"
+          done
+          [ $n -gt 0 ] || { echo "ERRO: style.xml do OrangeFox nao encontrado"; exit 1; }
           set +e
           source build/envsetup.sh
           lunch twrp_starlte-eng || exit 1
