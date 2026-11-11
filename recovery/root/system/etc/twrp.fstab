@@ -30,4 +30,4 @@
 /modem        emmc  /dev/block/platform/11120000.ufs/by-name/RADIO     flags=backup=1;display="Baseband (MODEM)";flashimg
 
 /external_sd  vfat  /dev/block/mmcblk0p1  /dev/block/mmcblk0  flags=display="Micro SDcard";storage;wipeingui;removable
-/usb-otg      vfat  /dev/block/sdf1       /dev/block/sdf       flags=display="USB-OTG";storage;wipeingui;removable
+/usb-otg      vfat  /dev/block/usbotg1  /dev/block/usbotg  flags=display="USB-OTG";storage;wipeingui;removable
