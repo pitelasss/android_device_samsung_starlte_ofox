@@ -1,15 +1,17 @@
-/system   erofs  /dev/block/platform/11120000.ufs/by-name/SYSTEM   flags=backup=1;display="System"
-/system   ext4   /dev/block/platform/11120000.ufs/by-name/SYSTEM   flags=backup=1;display="System"
-/vendor   erofs  /dev/block/platform/11120000.ufs/by-name/VENDOR   flags=backup=1;display="Vendor";wipeingui
-/vendor   ext4   /dev/block/platform/11120000.ufs/by-name/VENDOR   flags=backup=1;display="Vendor";wipeingui
-/product  erofs  /dev/block/platform/11120000.ufs/by-name/PRODUCT  flags=backup=1;display="Product";wipeingui
-/product  ext4   /dev/block/platform/11120000.ufs/by-name/PRODUCT  flags=backup=1;display="Product";wipeingui
-/odm      erofs  /dev/block/platform/11120000.ufs/by-name/ODM      flags=backup=1;display="ODM";wipeingui
-/odm      ext4   /dev/block/platform/11120000.ufs/by-name/ODM      flags=backup=1;display="ODM";wipeingui
-/prism    erofs  /dev/block/platform/11120000.ufs/by-name/PRISM    flags=backup=1;display="Prism";wipeingui
-/prism    ext4   /dev/block/platform/11120000.ufs/by-name/PRISM    flags=backup=1;display="Prism";wipeingui
-/optics   erofs  /dev/block/platform/11120000.ufs/by-name/OPTICS   flags=backup=1;display="Optics";wipeingui
-/optics   ext4   /dev/block/platform/11120000.ufs/by-name/OPTICS   flags=backup=1;display="Optics";wipeingui
+# AOSP (v2) entries: one partition, filesystem detected automatically (erofs or ext4)
+/dev/block/platform/11120000.ufs/by-name/SYSTEM      /system   erofs  ro       wait
+/dev/block/platform/11120000.ufs/by-name/SYSTEM      /system   ext4   noatime  wait
+/dev/block/platform/11120000.ufs/by-name/VENDOR      /vendor   erofs  ro       wait
+/dev/block/platform/11120000.ufs/by-name/VENDOR      /vendor   ext4   noatime  wait
+/dev/block/platform/11120000.ufs/by-name/PRODUCT     /product  erofs  ro       wait
+/dev/block/platform/11120000.ufs/by-name/PRODUCT     /product  ext4   noatime  wait
+/dev/block/platform/11120000.ufs/by-name/ODM         /odm      erofs  ro       wait
+/dev/block/platform/11120000.ufs/by-name/ODM         /odm      ext4   noatime  wait
+/dev/block/platform/11120000.ufs/by-name/PRISM       /prism    erofs  ro       wait
+/dev/block/platform/11120000.ufs/by-name/PRISM       /prism    ext4   noatime  wait
+/dev/block/platform/11120000.ufs/by-name/OPTICS      /optics   erofs  ro       wait
+/dev/block/platform/11120000.ufs/by-name/OPTICS      /optics   ext4   noatime  wait
+
 /data     f2fs   /dev/block/platform/11120000.ufs/by-name/USERDATA flags=backup=1;length=-20480
 /data     ext4   /dev/block/platform/11120000.ufs/by-name/USERDATA flags=backup=1;length=-20480
 /cache    ext4   /dev/block/platform/11120000.ufs/by-name/CACHE    flags=backup=1
