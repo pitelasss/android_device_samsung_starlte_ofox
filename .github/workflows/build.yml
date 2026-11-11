@@ -73,3 +73,15 @@ jobs:
         with:
           name: orangefox-starlte
           path: out/
+      - name: Publish image to the builds branch
+        if: success()
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/pub && cd $GITHUB_WORKSPACE/pub
+          cp $GITHUB_WORKSPACE/out/recovery.img .
+          sha256sum recovery.img > recovery.img.sha256
+          git init -q -b builds
+          git add -A
+          git -c user.name=github-actions -c user.email=actions@github.com commit -qm "build ${GITHUB_RUN_NUMBER} (${GITHUB_SHA::7})"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" builds
+permissions:
+  contents: write
