@@ -93,4 +93,3 @@ OF_FLASHLIGHT_ENABLE := 0
 # Battery % in the status bar: read /sys/class/power_supply/battery directly
 # (the health HAL path shows an empty/"!" battery on Exynos 9810)
 TW_USE_LEGACY_BATTERY_SERVICES := true
-TW_CUSTOM_BATTERY_PATH := "/sys/class/power_supply/battery"
