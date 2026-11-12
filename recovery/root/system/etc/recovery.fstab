@@ -3,33 +3,25 @@
 /dev/block/platform/11120000.ufs/by-name/SYSTEM      /system   ext4   noatime  wait
 /dev/block/platform/11120000.ufs/by-name/VENDOR      /vendor   erofs  ro       wait
 /dev/block/platform/11120000.ufs/by-name/VENDOR      /vendor   ext4   noatime  wait
-/dev/block/platform/11120000.ufs/by-name/PRODUCT     /product  erofs  ro       wait
-/dev/block/platform/11120000.ufs/by-name/PRODUCT     /product  ext4   noatime  wait
 /dev/block/platform/11120000.ufs/by-name/ODM         /odm      erofs  ro       wait
 /dev/block/platform/11120000.ufs/by-name/ODM         /odm      ext4   noatime  wait
-/dev/block/platform/11120000.ufs/by-name/PRISM       /prism    erofs  ro       wait
-/dev/block/platform/11120000.ufs/by-name/PRISM       /prism    ext4   noatime  wait
-/dev/block/platform/11120000.ufs/by-name/OPTICS      /optics   erofs  ro       wait
-/dev/block/platform/11120000.ufs/by-name/OPTICS      /optics   ext4   noatime  wait
 
 /data     f2fs   /dev/block/platform/11120000.ufs/by-name/USERDATA flags=backup=1;length=-20480
 /data     ext4   /dev/block/platform/11120000.ufs/by-name/USERDATA flags=backup=1;length=-20480
 /cache    ext4   /dev/block/platform/11120000.ufs/by-name/CACHE    flags=backup=1
 /efs      ext4   /dev/block/platform/11120000.ufs/by-name/EFS      flags=backup=1;display="EFS"
+/preload  ext4   /dev/block/platform/11120000.ufs/by-name/HIDDEN   flags=display="Preload";backup=0;wipeingui
 
 /misc      emmc  /dev/block/platform/11120000.ufs/by-name/MISC      flags=backup=0
 /boot      emmc  /dev/block/platform/11120000.ufs/by-name/BOOT      flags=backup=1;display="Kernel";flashimg
 /recovery  emmc  /dev/block/platform/11120000.ufs/by-name/RECOVERY  flags=backup=1;display="Recovery";flashimg
 
 /system_image  emmc  /dev/block/platform/11120000.ufs/by-name/SYSTEM  flags=backup=1;display="System Image";flashimg
-/vendor_image  emmc  /dev/block/platform/11120000.ufs/by-name/VENDOR  flags=backup=0;flashimg
-/odm_image     emmc  /dev/block/platform/11120000.ufs/by-name/ODM     flags=backup=0;display="ODM Image";flashimg
-/product_image emmc  /dev/block/platform/11120000.ufs/by-name/PRODUCT flags=backup=1;display="Product Image";flashimg
-/prism_image   emmc  /dev/block/platform/11120000.ufs/by-name/PRISM   flags=backup=1;display="Prism Image";flashimg
-/optics_image  emmc  /dev/block/platform/11120000.ufs/by-name/OPTICS  flags=backup=1;display="Optics Image";flashimg
+/vendor_image  emmc  /dev/block/platform/11120000.ufs/by-name/VENDOR  flags=backup=1;display="Vendor Image";flashimg
+/odm_image     emmc  /dev/block/platform/11120000.ufs/by-name/ODM     flags=backup=1;display="ODM Image";flashimg
 
-/dqmdbg       emmc  /dev/block/platform/11120000.ufs/by-name/DQMDBG    flags=backup=1;display="DQMDBG Image";flashimg
-/modem_debug  emmc  /dev/block/platform/11120000.ufs/by-name/CP_DEBUG  flags=backup=1;display="CPDEB (MODEM_DEBUG)";flashimg
+/dqmdbg       emmc  /dev/block/platform/11120000.ufs/by-name/DQMDBG    flags=backup=0;display="DQMDBG Image";flashimg
+/modem_debug  emmc  /dev/block/platform/11120000.ufs/by-name/CP_DEBUG  flags=backup=0;display="CPDEB (MODEM_DEBUG)";flashimg
 /modem        emmc  /dev/block/platform/11120000.ufs/by-name/RADIO     flags=backup=1;display="Baseband (MODEM)";flashimg
 
 /external_sd  vfat  /dev/block/mmcblk0p1  /dev/block/mmcblk0  flags=display="Micro SDcard";storage;wipeingui;removable
