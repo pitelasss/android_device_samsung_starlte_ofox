@@ -1,28 +1,19 @@
-# AOSP (v2) entries: one partition, filesystem detected automatically (erofs or ext4)
-/dev/block/platform/11120000.ufs/by-name/SYSTEM      /system   erofs  ro       wait
-/dev/block/platform/11120000.ufs/by-name/SYSTEM      /system   ext4   noatime  wait
-/dev/block/platform/11120000.ufs/by-name/VENDOR      /vendor   erofs  ro       wait
-/dev/block/platform/11120000.ufs/by-name/VENDOR      /vendor   ext4   noatime  wait
-/dev/block/platform/11120000.ufs/by-name/ODM         /odm      erofs  ro       wait
-/dev/block/platform/11120000.ufs/by-name/ODM         /odm      ext4   noatime  wait
-
-/data     f2fs   /dev/block/platform/11120000.ufs/by-name/USERDATA flags=backup=1;length=-20480
-/data     ext4   /dev/block/platform/11120000.ufs/by-name/USERDATA flags=backup=1;length=-20480
-/cache    ext4   /dev/block/platform/11120000.ufs/by-name/CACHE    flags=backup=1
-/efs      ext4   /dev/block/platform/11120000.ufs/by-name/EFS      flags=backup=1;display="EFS"
-/preload  ext4   /dev/block/platform/11120000.ufs/by-name/HIDDEN   flags=display="Preload";backup=0;wipeingui
-
-/misc      emmc  /dev/block/platform/11120000.ufs/by-name/MISC      flags=backup=0
-/boot      emmc  /dev/block/platform/11120000.ufs/by-name/BOOT      flags=backup=1;display="Kernel";flashimg
-/recovery  emmc  /dev/block/platform/11120000.ufs/by-name/RECOVERY  flags=backup=1;display="Recovery";flashimg
-
-/system_image  emmc  /dev/block/platform/11120000.ufs/by-name/SYSTEM  flags=backup=1;display="System Image";flashimg
-/vendor_image  emmc  /dev/block/platform/11120000.ufs/by-name/VENDOR  flags=backup=1;display="Vendor Image";flashimg
-/odm_image     emmc  /dev/block/platform/11120000.ufs/by-name/ODM     flags=backup=1;display="ODM Image";flashimg
-
-/dqmdbg       emmc  /dev/block/platform/11120000.ufs/by-name/DQMDBG    flags=backup=0;display="DQMDBG Image";flashimg
-/modem_debug  emmc  /dev/block/platform/11120000.ufs/by-name/CP_DEBUG  flags=backup=0;display="CPDEB (MODEM_DEBUG)";flashimg
-/modem        emmc  /dev/block/platform/11120000.ufs/by-name/RADIO     flags=backup=1;display="Baseband (MODEM)";flashimg
-
-/external_sd  vfat  /dev/block/mmcblk0p1  /dev/block/mmcblk0  flags=display="Micro SDcard";storage;wipeingui;removable
-/usb-otg      vfat  /dev/block/usbotg1  /dev/block/usbotg  flags=display="USB-OTG";storage;wipeingui;removable
+# AOSP (fs_mgr) fstab - read by init and libbootloader_message, NOT by the recovery UI
+# (OrangeFox/TWRP use /system/etc/twrp.fstab + twrp.flags for the partition lists).
+# It must stay in pure v2 format: one TWRP-style line makes fs_mgr reject the whole
+# file, and then init can't find /misc and refuses "reboot,recovery" (the phone
+# boots to system instead of recovery).
+#<src>                                              <mnt_point>  <type>  <mnt_flags>                 <fs_mgr_flags>
+/dev/block/platform/11120000.ufs/by-name/SYSTEM     /system      erofs   ro                          wait
+/dev/block/platform/11120000.ufs/by-name/SYSTEM     /system      ext4    ro                          wait
+/dev/block/platform/11120000.ufs/by-name/VENDOR     /vendor      erofs   ro                          wait
+/dev/block/platform/11120000.ufs/by-name/VENDOR     /vendor      ext4    ro                          wait
+/dev/block/platform/11120000.ufs/by-name/ODM        /odm         erofs   ro                          wait
+/dev/block/platform/11120000.ufs/by-name/ODM        /odm         ext4    ro                          wait
+/dev/block/platform/11120000.ufs/by-name/USERDATA   /data        f2fs    noatime,nosuid,nodev        wait
+/dev/block/platform/11120000.ufs/by-name/USERDATA   /data        ext4    noatime,nosuid,nodev        wait
+/dev/block/platform/11120000.ufs/by-name/CACHE      /cache       ext4    noatime,nosuid,nodev        wait
+/dev/block/platform/11120000.ufs/by-name/EFS        /efs         ext4    noatime,nosuid,nodev        wait
+/dev/block/platform/11120000.ufs/by-name/MISC       /misc        emmc    defaults                    defaults
+/dev/block/platform/11120000.ufs/by-name/BOOT       /boot        emmc    defaults                    defaults
+/dev/block/platform/11120000.ufs/by-name/RECOVERY   /recovery    emmc    defaults                    defaults
