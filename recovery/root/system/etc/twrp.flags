@@ -1,3 +1,4 @@
 /odm      ext4   /dev/block/platform/11120000.ufs/by-name/ODM         flags=backup=0;display="ODM";wipeingui
 /system   ext4   /dev/block/platform/11120000.ufs/by-name/SYSTEM      flags=backup=1;display="System";wipeingui
 /vendor   ext4   /dev/block/platform/11120000.ufs/by-name/VENDOR      flags=backup=0;display="Vendor";wipeingui
+/system_root ext4 /dev/block/platform/11120000.ufs/by-name/SYSTEM      flags=backup=0;display="System";wipeingui
