@@ -62,6 +62,16 @@ jobs:
           cd $GITHUB_WORKSPACE/out
           tar -H ustar -cf OrangeFox-starlte.tar recovery.img
           ls -l
+      - name: Make flashable OrangeFox zip
+        run: |
+          cd $GITHUB_WORKSPACE/out
+          rm -rf z && mkdir -p z/META-INF/com/google/android
+          sed "s/@BUILD@/#${GITHUB_RUN_NUMBER} (${GITHUB_SHA::7}) $(date -u +%Y-%m-%d)/" $GITHUB_WORKSPACE/device-tree/installer/update-binary > z/META-INF/com/google/android/update-binary
+          echo "# OrangeFox installer: see update-binary" > z/META-INF/com/google/android/updater-script
+          cp recovery.img z/
+          (cd z && sha256sum recovery.img > recovery.img.sha256 && zip -qr -X ../OrangeFox-starlte.zip .)
+          rm -rf z
+          unzip -l OrangeFox-starlte.zip
       - name: Collect log
         if: always()
         run: |
@@ -78,6 +88,8 @@ jobs:
         run: |
           mkdir -p $GITHUB_WORKSPACE/pub && cd $GITHUB_WORKSPACE/pub
           cp $GITHUB_WORKSPACE/out/recovery.img .
+          cp $GITHUB_WORKSPACE/out/OrangeFox-starlte.zip $GITHUB_WORKSPACE/out/OrangeFox-starlte.tar .
+          sha256sum OrangeFox-starlte.zip OrangeFox-starlte.tar > SHA256SUMS
           sha256sum recovery.img > recovery.img.sha256
           git init -q -b builds
           git add -A
