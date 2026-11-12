@@ -2,5 +2,5 @@
 /optics   ext4   /dev/block/platform/11120000.ufs/by-name/OPTICS      flags=backup=1;display="Optics";wipeingui
 /prism    ext4   /dev/block/platform/11120000.ufs/by-name/PRISM       flags=backup=1;display="Prism";wipeingui
 /product  ext4   /dev/block/platform/11120000.ufs/by-name/PRODUCT     flags=backup=1;display="Product";wipeingui
-/system   ext4   /dev/block/platform/11120000.ufs/by-name/SYSTEM      flags=backup=1;display="System"
+/system   ext4   /dev/block/platform/11120000.ufs/by-name/SYSTEM      flags=backup=1;display="System";wipeingui
 /vendor   ext4   /dev/block/platform/11120000.ufs/by-name/VENDOR      flags=backup=1;display="Vendor";wipeingui

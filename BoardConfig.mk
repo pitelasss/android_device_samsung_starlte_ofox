@@ -86,3 +86,6 @@ OF_STATUS_INDENT_RIGHT := 48
 OF_ALLOW_DISABLE_NAVBAR := 0
 OF_NO_TREBLE_COMPATIBILITY_CHECK := 1
 OF_QUICK_BACKUP_LIST := /boot;/data;
+
+# Samsung 9810: the torch is not a /sys/class/leds device -> hide the flashlight button
+OF_FLASHLIGHT_ENABLE := 0

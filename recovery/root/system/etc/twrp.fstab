@@ -21,9 +21,12 @@
 /boot      emmc  /dev/block/platform/11120000.ufs/by-name/BOOT      flags=backup=1;display="Kernel";flashimg
 /recovery  emmc  /dev/block/platform/11120000.ufs/by-name/RECOVERY  flags=backup=1;display="Recovery";flashimg
 
-/system_image  emmc  /dev/block/platform/11120000.ufs/by-name/SYSTEM  flags=backup=0;flashimg
+/system_image  emmc  /dev/block/platform/11120000.ufs/by-name/SYSTEM  flags=backup=1;display="System Image";flashimg
 /vendor_image  emmc  /dev/block/platform/11120000.ufs/by-name/VENDOR  flags=backup=0;flashimg
 /odm_image     emmc  /dev/block/platform/11120000.ufs/by-name/ODM     flags=backup=0;display="ODM Image";flashimg
+/product_image emmc  /dev/block/platform/11120000.ufs/by-name/PRODUCT flags=backup=1;display="Product Image";flashimg
+/prism_image   emmc  /dev/block/platform/11120000.ufs/by-name/PRISM   flags=backup=1;display="Prism Image";flashimg
+/optics_image  emmc  /dev/block/platform/11120000.ufs/by-name/OPTICS  flags=backup=1;display="Optics Image";flashimg
 
 /dqmdbg       emmc  /dev/block/platform/11120000.ufs/by-name/DQMDBG    flags=backup=1;display="DQMDBG Image";flashimg
 /modem_debug  emmc  /dev/block/platform/11120000.ufs/by-name/CP_DEBUG  flags=backup=1;display="CPDEB (MODEM_DEBUG)";flashimg
