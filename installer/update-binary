@@ -5,7 +5,7 @@
 OUTFD=/proc/self/fd/$2
 ZIP="$3"
 ui_print() { echo "ui_print $1" > $OUTFD; echo "ui_print" > $OUTFD; }
-abort() { ui_print " "; ui_print "ERRO: $1"; ui_print "A recovery NAO foi alterada."; cd /; rm -rf $T; exit 1; }
+abort() { ui_print " "; ui_print "ERROR: $1"; ui_print "The recovery was NOT changed."; cd /; rm -rf $T; exit 1; }
 
 NAME="Galaxy S9"; MODEL="G960F"
 REC=/dev/block/platform/11120000.ufs/by-name/RECOVERY
@@ -22,40 +22,40 @@ ui_print " "
 BL=$(getprop ro.boot.bootloader)
 [ -z "$BL" ] && BL=$(getprop ro.bootloader)
 case "$BL" in
-  $MODEL*) ui_print "- Telemovel: $BL (OK)" ;;
-  "") abort "nao consegui identificar o telemovel" ;;
-  *) abort "este zip e para o $NAME ($MODEL); este telemovel e $BL" ;;
+  $MODEL*) ui_print "- Device: $BL (OK)" ;;
+  "") abort "could not identify the device" ;;
+  *) abort "this zip is for the $NAME ($MODEL); this device is $BL" ;;
 esac
-[ -e $REC ] || abort "particao RECOVERY nao encontrada"
+[ -e $REC ] || abort "RECOVERY partition not found"
 
 # 2. extract and check the image
-rm -rf $T; mkdir -p $T; cd $T || abort "sem /tmp"
+rm -rf $T; mkdir -p $T; cd $T || abort "no /tmp"
 unzip -o "$ZIP" recovery.img recovery.img.sha256 -d $T >/dev/null 2>&1
-[ -f recovery.img ] && [ -f recovery.img.sha256 ] || abort "nao consegui extrair a recovery do zip (zip corrompido?)"
+[ -f recovery.img ] && [ -f recovery.img.sha256 ] || abort "could not extract the recovery from the zip (corrupted zip?)"
 SUM=$(sha256sum recovery.img | cut -d' ' -f1)
-[ "$SUM" = "$(cut -d' ' -f1 recovery.img.sha256)" ] || abort "a recovery dentro do zip esta corrompida (SHA-256 errado). Descarrega o zip outra vez."
-[ "$(head -c 8 recovery.img)" = "ANDROID!" ] || abort "recovery.img invalida"
-[ "$(tail -c 16 recovery.img)" = "SEANDROIDENFORCE" ] || abort "recovery.img sem SEANDROIDENFORCE"
+[ "$SUM" = "$(cut -d' ' -f1 recovery.img.sha256)" ] || abort "the recovery inside the zip is corrupted (wrong SHA-256). Download the zip again."
+[ "$(head -c 8 recovery.img)" = "ANDROID!" ] || abort "invalid recovery.img"
+[ "$(tail -c 16 recovery.img)" = "SEANDROIDENFORCE" ] || abort "recovery.img without SEANDROIDENFORCE"
 SIZE=$(wc -c < recovery.img)
 PART=$(blockdev --getsize64 $REC 2>/dev/null)
-[ -n "$PART" ] && [ "$SIZE" -gt "$PART" ] && abort "imagem ($SIZE) maior que a particao ($PART)"
-ui_print "- Imagem verificada (SHA-256 OK, $SIZE bytes)"
+[ -n "$PART" ] && [ "$SIZE" -gt "$PART" ] && abort "image ($SIZE) bigger than the partition ($PART)"
+ui_print "- Image verified (SHA-256 OK, $SIZE bytes)"
 
 # 3. flash and read back
-ui_print "- A escrever a recovery..."
+ui_print "- Flashing the recovery..."
 blockdev --setrw $REC 2>/dev/null
-dd if=recovery.img of=$REC bs=1048576 2>/dev/null || abort "falhou a escrita na particao RECOVERY"
+dd if=recovery.img of=$REC bs=1048576 2>/dev/null || abort "writing to the RECOVERY partition failed"
 sync
 BACK=$(head -c $SIZE $REC | sha256sum | cut -d' ' -f1)
 if [ "$BACK" != "$SUM" ]; then
   ui_print " "
-  ui_print "ERRO: a verificacao depois de escrever falhou!"
-  ui_print "Faz flash da recovery pelo Odin (.tar) antes de reiniciar."
+  ui_print "ERROR: the check after flashing failed!"
+  ui_print "Flash the recovery with Odin (.tar) before rebooting."
   cd /; rm -rf $T; exit 1
 fi
-ui_print "- Verificado depois de escrever: OK"
+ui_print "- Verified after flashing: OK"
 cd /; rm -rf $T
 ui_print " "
-ui_print "Feito! Reinicia para a recovery (Reboot > Recovery)."
+ui_print "Done! Reboot to recovery (Reboot > Recovery)."
 ui_print " "
 exit 0
