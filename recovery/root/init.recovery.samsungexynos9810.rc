@@ -13,3 +13,17 @@ service otg-detect /system/bin/sh /system/bin/otg-detect.sh
 
 on boot
     start otg-detect
+
+# Charging LED (red while charging, green when full)
+service led-charge /system/bin/sh /system/bin/led-charge.sh
+    user root
+    group root
+    seclabel u:r:recovery:s0
+    disabled
+
+on boot
+    start led-charge
+
+on shutdown
+    stop led-charge
+    write /sys/class/sec/led/led_pattern 0
